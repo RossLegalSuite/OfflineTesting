@@ -61,63 +61,53 @@
 
             <div class="card-body">
               <form>
-                <!-- <div class="form-group row">
-                  <label for="name" class="col-sm-4 col-form-label text-md-right">Employee</label>
-                  <div class="col-md-6">
-                    <select id="employeeList" class="form-control"></select>
-                  </div>
-                </div>-->
-                <!-- <div class="form-group row">
-                  <label for="name" class="col-sm-4 col-form-label text-md-right">Employee</label>
-                  <div class="col-md-6">
-                    <select class="form-control" name="employeeList" v-model="employee">
-                      <option
-                        v-for="label in labelList"
-                        :key="label"
-                        :selected="label == employee ? 'selected' : ''"
-                        :value="label"
-                      >{{ label }}</option>
-                    </select>
-                  </div>
-                </div>-->
                 <div class="form-group row">
-                  <label for="year" class="col-md-4 col-form-label text-md-right">From</label>
-                  <div class="col-md-6 date">
-                    <span class="input-group-addon">
-                      <i class="fa fa-calendar"></i>
-                    </span>
-                    <p>
-                      Date:
-                      <input type="text" id="datepicker">
-                    </p>
+                  <label for="name" class="col-sm-4 col-form-label text-md-right">Filter Date By:</label>
+                  <div class="col-md-6">
+                    <input type="radio" id="thisWeek" value="thisWeek" v-model="dateFilterType">
+                    <label for="one">This Week</label>
+                    <br>
+                    <input type="radio" id="thisMonth" value="thisMonth" v-model="dateFilterType">
+                    <label for="two">This Month</label>
+                    <br>
+                    <input type="radio" id="thisYear" value="thisYear" v-model="dateFilterType">
+                    <label for="three">This Year</label>
+                    <br>
                     <input
-                      v-model="startDate"
-                      id="startDate"
-                      type="date"
-                      class="form-control"
-                      value
-                      required
-                      @change="onApply"
+                      type="radio"
+                      id="customDateInput"
+                      value="customDateInput"
+                      v-model="dateFilterType"
                     >
+                    <label for="four">Custom Dates</label>
                   </div>
                 </div>
-                <div class="form-group row">
-                  <label for="year" class="col-md-4 col-form-label text-md-right">Selects</label>
-                  <div class="col-md-6">
-                    <div class="list-group">
-                      <a href="#" class="list-group-item list-group-item-action">First item</a>
-                      <a href="#" class="list-group-item list-group-item-action">Second item</a>
-                      <a href="#" class="list-group-item list-group-item-action">Third item</a>
+                <template v-if="dateFilterType === 'customDateInput'">
+                  <div class="form-group row">
+                    <label for="year" class="col-md-4 col-form-label text-md-right">From</label>
+                    <div class="col-md-6">
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="startDate"
+                        v-model="startDate"
+                        @change="onApply"
+                        required
+                      >
                     </div>
                   </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="year" class="col-md-4 col-form-label text-md-right">To</label>
-                  <div class="col-md-6 date">
-                    <span class="input-group-addon">
-                      <i class="fa fa-calendar"></i>
-                    </span>
+                  <div class="form-group row">
+                    <label for="year" class="col-md-4 col-form-label text-md-right">To</label>
+                    <div class="col-md-6">
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="endDate"
+                        v-model="endDate"
+                        @change="onApply"
+                        required
+                      >
+                      <!-- 
                     <input
                       v-model="endDate"
                       id="endDate"
@@ -126,20 +116,10 @@
                       value
                       required
                       @change="onApply"
-                    >
+                      >-->
+                    </div>
                   </div>
-                </div>
-
-                <!-- <div class="form-group row mb-0">
-                  <div class="col-md-8 offset-md-4">
-                    <button
-                      type="button"
-                      class="btn btn-primary"
-                      id="apply-button"
-                      v-on:click="onApply()"
-                    >Apply</button>
-                  </div>
-                </div>-->
+                </template>
               </form>
             </div>
           </div>
@@ -188,7 +168,7 @@
         <table>
           <tr>
             <td class="report-heading" title>
-              <h2 class="mb-0">{{ title}}</h2>
+              <h2 class="mb-0">{{title}}</h2>
               <p class="mb-0" v-html="subTitle"></p>
             </td>
             <td>
@@ -230,6 +210,11 @@ export default {
 
   data() {
     return {
+      dateFilterType: "customDateInput",
+      thisWeek: true,
+      thisMonth: false,
+      thisYear: false,
+      customDateInput: false,
       recordId: 1,
       title: "Transfer Matters",
       description: "Source of Business with Fee Estimate",
@@ -293,7 +278,9 @@ export default {
   },
   methods: {
     onApply(e) {
-      this.loadChart();
+      console.log("At Changed on Date Invoked");
+
+      // this.loadChart();
       // console.log(e.target.value);
       // this.employeeTest = e.target.value;
       // console.log("method function ", this.employee);
@@ -394,7 +381,6 @@ export default {
     // }
   },
   mounted() {
-    $("#datepicker").datepicker();
     // var dateTime = new Date(this.startDate);
     // this.startDate = moment(dateTime).format("YYYY-MM-DD");
 
@@ -403,19 +389,59 @@ export default {
 
     this.loadChart();
     if (this.gridstackflag) {
-      console.log("true"); //Max this
+      //  console.log("true"); //Max this
     } else {
-      console.log("false"); //dont think I need to do anything here
+      //  console.log("false"); //dont think I need to do anything here
     }
   },
   watch: {
+    startDate: function() {
+      console.log("startDate will Refresh from Watch");
+    },
+    endDate: function() {
+      console.log("endDate will Refresh");
+    },
+    dateFilterType: function() {
+      //console.log(this.dateFilterType, "was watched");
+      switch (this.dateFilterType) {
+        case "thisWeek":
+          this.startDate = moment()
+            .startOf("week")
+            .format("YYYY-MM-DD");
+          this.endDate = moment()
+            .endOf("week")
+            .format("YYYY-MM-DD");
+          break;
+        case "thisMonth":
+          this.startDate = moment()
+            .startOf("month")
+            .format("YYYY-MM-DD");
+          this.endDate = moment()
+            .endOf("month")
+            .format("YYYY-MM-DD");
+          break;
+        case "thisYear":
+          this.startDate = moment()
+            .startOf("year")
+            .format("YYYY-MM-DD");
+          this.endDate = moment()
+            .endOf("year")
+            .format("YYYY-MM-DD");
+          break;
+        case "customDateInput":
+          //  console.log("this Custom");
+          break;
+        default:
+          console.log("this not working");
+      }
+    },
     labelList: function() {
-      console.log(this.labelList, "was watched");
+      // console.log(this.labelList, "was watched");
     },
 
     employee: function(newVal, oldVal) {
       //not working
-      console.log("watched widget employee", this.employee);
+      // console.log("watched widget employee", this.employee);
     },
 
     deep: true
@@ -435,8 +461,5 @@ ul {
 li {
   display: inline-block;
   margin: 0 10px;
-}
-a {
-  color: #42b983;
 }
 </style>

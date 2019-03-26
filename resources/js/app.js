@@ -13,6 +13,7 @@ require("./bootstrap");
  *
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
+
 import "jquery-ui/ui/widgets/datepicker.js";
 import "jquery-ui/ui/widget.js";
 import "jquery-ui/ui/widgets/mouse.js";

@@ -2002,26 +2002,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
  //import * from "jquery";
 
 /* harmony default export */ __webpack_exports__["default"] = (_props$data$data$comp = {
@@ -2034,6 +2014,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   var _ref;
 
   return _ref = {
+    dateFilterType: "customDateInput",
+    thisWeek: true,
+    thisMonth: false,
+    thisYear: false,
+    customDateInput: false,
     recordId: 1,
     title: "Transfer Matters",
     description: "Source of Business with Fee Estimate",
@@ -2086,7 +2071,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }
 }), _defineProperty(_props$data$data$comp, "methods", {
   onApply: function onApply(e) {
-    this.loadChart(); // console.log(e.target.value);
+    console.log("At Changed on Date Invoked"); // this.loadChart();
+    // console.log(e.target.value);
     // this.employeeTest = e.target.value;
     // console.log("method function ", this.employee);
     // this.employee = e.target.value;
@@ -2158,25 +2144,52 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   // }
 
 }), _defineProperty(_props$data$data$comp, "mounted", function mounted() {
-  $("#datepicker").datepicker(); // var dateTime = new Date(this.startDate);
+  // var dateTime = new Date(this.startDate);
   // this.startDate = moment(dateTime).format("YYYY-MM-DD");
   // var dateTime = new Date(this.endDate);
   // this.endDate = moment(dateTime).format("YYYY-MM-DD");
-
   this.loadChart();
 
-  if (this.gridstackflag) {
-    console.log("true"); //Max this
-  } else {
-    console.log("false"); //dont think I need to do anything here
-  }
+  if (this.gridstackflag) {//  console.log("true"); //Max this
+  } else {//  console.log("false"); //dont think I need to do anything here
+    }
 }), _defineProperty(_props$data$data$comp, "watch", {
-  labelList: function labelList() {
-    console.log(this.labelList, "was watched");
+  startDate: function startDate() {
+    console.log("startDate will Refresh from Watch");
   },
-  employee: function employee(newVal, oldVal) {
-    //not working
-    console.log("watched widget employee", this.employee);
+  endDate: function endDate() {
+    console.log("endDate will Refresh");
+  },
+  dateFilterType: function dateFilterType() {
+    //console.log(this.dateFilterType, "was watched");
+    switch (this.dateFilterType) {
+      case "thisWeek":
+        this.startDate = moment().startOf("week").format("YYYY-MM-DD");
+        this.endDate = moment().endOf("week").format("YYYY-MM-DD");
+        break;
+
+      case "thisMonth":
+        this.startDate = moment().startOf("month").format("YYYY-MM-DD");
+        this.endDate = moment().endOf("month").format("YYYY-MM-DD");
+        break;
+
+      case "thisYear":
+        this.startDate = moment().startOf("year").format("YYYY-MM-DD");
+        this.endDate = moment().endOf("year").format("YYYY-MM-DD");
+        break;
+
+      case "customDateInput":
+        //  console.log("this Custom");
+        break;
+
+      default:
+        console.log("this not working");
+    }
+  },
+  labelList: function labelList() {// console.log(this.labelList, "was watched");
+  },
+  employee: function employee(newVal, oldVal) {//not working
+    // console.log("watched widget employee", this.employee);
   },
   deep: true
 }), _props$data$data$comp);
@@ -21330,7 +21343,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\nh3[data-v-0ae86c4c] {\n  margin: 40px 0 0;\n}\nul[data-v-0ae86c4c] {\n  list-style-type: none;\n  padding: 0;\n}\nli[data-v-0ae86c4c] {\n  display: inline-block;\n  margin: 0 10px;\n}\na[data-v-0ae86c4c] {\n  color: #42b983;\n}\n", ""]);
+exports.push([module.i, "\nh3[data-v-0ae86c4c] {\n  margin: 40px 0 0;\n}\nul[data-v-0ae86c4c] {\n  list-style-type: none;\n  padding: 0;\n}\nli[data-v-0ae86c4c] {\n  display: inline-block;\n  margin: 0 10px;\n}\n", ""]);
 
 // exports
 
@@ -99462,99 +99475,232 @@ var render = function() {
                   _vm._m(2),
                   _vm._v(" "),
                   _c("div", { staticClass: "card-body" }, [
-                    _c("form", [
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass:
-                              "col-md-4 col-form-label text-md-right",
-                            attrs: { for: "year" }
-                          },
-                          [_vm._v("From")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-6 date" }, [
-                          _vm._m(3),
-                          _vm._v(" "),
-                          _vm._m(4),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.startDate,
-                                expression: "startDate"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              id: "startDate",
-                              type: "date",
-                              value: "",
-                              required: ""
+                    _c(
+                      "form",
+                      [
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass:
+                                "col-sm-4 col-form-label text-md-right",
+                              attrs: { for: "name" }
                             },
-                            domProps: { value: _vm.startDate },
-                            on: {
-                              change: _vm.onApply,
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.startDate = $event.target.value
-                              }
-                            }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _vm._m(5),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass:
-                              "col-md-4 col-form-label text-md-right",
-                            attrs: { for: "year" }
-                          },
-                          [_vm._v("To")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-6 date" }, [
-                          _vm._m(6),
+                            [_vm._v("Filter Date By:")]
+                          ),
                           _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.endDate,
-                                expression: "endDate"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              id: "endDate",
-                              type: "date",
-                              value: "",
-                              required: ""
-                            },
-                            domProps: { value: _vm.endDate },
-                            on: {
-                              change: _vm.onApply,
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                          _c("div", { staticClass: "col-md-6" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.dateFilterType,
+                                  expression: "dateFilterType"
                                 }
-                                _vm.endDate = $event.target.value
+                              ],
+                              attrs: {
+                                type: "radio",
+                                id: "thisWeek",
+                                value: "thisWeek"
+                              },
+                              domProps: {
+                                checked: _vm._q(_vm.dateFilterType, "thisWeek")
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.dateFilterType = "thisWeek"
+                                }
                               }
-                            }
-                          })
-                        ])
-                      ])
-                    ])
+                            }),
+                            _vm._v(" "),
+                            _c("label", { attrs: { for: "one" } }, [
+                              _vm._v("This Week")
+                            ]),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.dateFilterType,
+                                  expression: "dateFilterType"
+                                }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                id: "thisMonth",
+                                value: "thisMonth"
+                              },
+                              domProps: {
+                                checked: _vm._q(_vm.dateFilterType, "thisMonth")
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.dateFilterType = "thisMonth"
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("label", { attrs: { for: "two" } }, [
+                              _vm._v("This Month")
+                            ]),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.dateFilterType,
+                                  expression: "dateFilterType"
+                                }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                id: "thisYear",
+                                value: "thisYear"
+                              },
+                              domProps: {
+                                checked: _vm._q(_vm.dateFilterType, "thisYear")
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.dateFilterType = "thisYear"
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("label", { attrs: { for: "three" } }, [
+                              _vm._v("This Year")
+                            ]),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.dateFilterType,
+                                  expression: "dateFilterType"
+                                }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                id: "customDateInput",
+                                value: "customDateInput"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.dateFilterType,
+                                  "customDateInput"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.dateFilterType = "customDateInput"
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("label", { attrs: { for: "four" } }, [
+                              _vm._v("Custom Dates")
+                            ])
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _vm.dateFilterType === "customDateInput"
+                          ? [
+                              _c("div", { staticClass: "form-group row" }, [
+                                _c(
+                                  "label",
+                                  {
+                                    staticClass:
+                                      "col-md-4 col-form-label text-md-right",
+                                    attrs: { for: "year" }
+                                  },
+                                  [_vm._v("From")]
+                                ),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col-md-6" }, [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.startDate,
+                                        expression: "startDate"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      type: "text",
+                                      id: "startDate",
+                                      required: ""
+                                    },
+                                    domProps: { value: _vm.startDate },
+                                    on: {
+                                      change: _vm.onApply,
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.startDate = $event.target.value
+                                      }
+                                    }
+                                  })
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "form-group row" }, [
+                                _c(
+                                  "label",
+                                  {
+                                    staticClass:
+                                      "col-md-4 col-form-label text-md-right",
+                                    attrs: { for: "year" }
+                                  },
+                                  [_vm._v("To")]
+                                ),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col-md-6" }, [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.endDate,
+                                        expression: "endDate"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      type: "text",
+                                      id: "endDate",
+                                      required: ""
+                                    },
+                                    domProps: { value: _vm.endDate },
+                                    on: {
+                                      change: _vm.onApply,
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.endDate = $event.target.value
+                                      }
+                                    }
+                                  })
+                                ])
+                              ])
+                            ]
+                          : _vm._e()
+                      ],
+                      2
+                    )
                   ])
                 ])
               ])
@@ -99564,7 +99710,7 @@ var render = function() {
       : _vm._e(),
     _vm._v(" "),
     !_vm.gridstackflag
-      ? _c("div", { staticClass: "row mt-5" }, [_vm._m(7)])
+      ? _c("div", { staticClass: "row mt-5" }, [_vm._m(3)])
       : _vm._e(),
     _vm._v(" "),
     _vm.gridstackflag
@@ -99608,7 +99754,7 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _vm._m(8)
+          _vm._m(4)
         ])
       : _vm._e()
   ])
@@ -99654,77 +99800,6 @@ var staticRenderFns = [
           ])
         ])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "input-group-addon" }, [
-      _c("i", { staticClass: "fa fa-calendar" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", [
-      _vm._v("\n                    Date:\n                    "),
-      _c("input", { attrs: { type: "text", id: "datepicker" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group row" }, [
-      _c(
-        "label",
-        {
-          staticClass: "col-md-4 col-form-label text-md-right",
-          attrs: { for: "year" }
-        },
-        [_vm._v("Selects")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-6" }, [
-        _c("div", { staticClass: "list-group" }, [
-          _c(
-            "a",
-            {
-              staticClass: "list-group-item list-group-item-action",
-              attrs: { href: "#" }
-            },
-            [_vm._v("First item")]
-          ),
-          _vm._v(" "),
-          _c(
-            "a",
-            {
-              staticClass: "list-group-item list-group-item-action",
-              attrs: { href: "#" }
-            },
-            [_vm._v("Second item")]
-          ),
-          _vm._v(" "),
-          _c(
-            "a",
-            {
-              staticClass: "list-group-item list-group-item-action",
-              attrs: { href: "#" }
-            },
-            [_vm._v("Third item")]
-          )
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "input-group-addon" }, [
-      _c("i", { staticClass: "fa fa-calendar" })
     ])
   },
   function() {
@@ -112175,15 +112250,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!*****************************************************!*\
   !*** ./resources/js/components/TransferMatters.vue ***!
   \*****************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _TransferMatters_vue_vue_type_template_id_0ae86c4c_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TransferMatters.vue?vue&type=template&id=0ae86c4c&scoped=true& */ "./resources/js/components/TransferMatters.vue?vue&type=template&id=0ae86c4c&scoped=true&");
 /* harmony import */ var _TransferMatters_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TransferMatters.vue?vue&type=script&lang=js& */ "./resources/js/components/TransferMatters.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _TransferMatters_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _TransferMatters_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _TransferMatters_vue_vue_type_style_index_0_id_0ae86c4c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TransferMatters.vue?vue&type=style&index=0&id=0ae86c4c&scoped=true&lang=css& */ "./resources/js/components/TransferMatters.vue?vue&type=style&index=0&id=0ae86c4c&scoped=true&lang=css&");
+/* empty/unused harmony star reexport *//* harmony import */ var _TransferMatters_vue_vue_type_style_index_0_id_0ae86c4c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TransferMatters.vue?vue&type=style&index=0&id=0ae86c4c&scoped=true&lang=css& */ "./resources/js/components/TransferMatters.vue?vue&type=style&index=0&id=0ae86c4c&scoped=true&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -112215,7 +112289,7 @@ component.options.__file = "resources/js/components/TransferMatters.vue"
 /*!******************************************************************************!*\
   !*** ./resources/js/components/TransferMatters.vue?vue&type=script&lang=js& ***!
   \******************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -112277,8 +112351,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\offline\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\offline\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\OfflineTesting\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\OfflineTesting\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
